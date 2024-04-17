@@ -38,7 +38,6 @@ class Auth:
                         return False
         return True
 
-
     def authorization_header(self, request=None) -> str:
         """
         Returns the authorization header from a request object
@@ -49,7 +48,6 @@ class Auth:
         if header is None:
             return None
         return header
-
 
     def current_user(self, request=None) -> TypeVar('User'):
         """
