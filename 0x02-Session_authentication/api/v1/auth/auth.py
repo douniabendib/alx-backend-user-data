@@ -1,31 +1,34 @@
 #!/usr/bin/env python3
-""" Definition of class Auth
 """
+Definition of class Auth
+"""
+import os
 from flask import request
 from typing import (
-        List,
-        TypeVar
-        )
+    List,
+    TypeVar
+)
 
 
 class Auth:
-    """class to manage the API authentication
+    """
+    Manages the API authentication
     """
     def require_auth(self, path: str, excluded_paths: List[str]) -> bool:
         """
         Determines whether a given path requires authentication or not
         Args:
-        - path(str): Url path to be checked
-        - excluded_paths(List of str): List of paths that do not require
-        authentication
+            - path(str): Url path to be checked
+            - excluded_paths(List of str): List of paths that do not require
+              authentication
         Return:
-        - True if path is not in excluded_paths, else False
+            - True if path is not in excluded_paths, else False
         """
         if path is None:
             return True
         elif excluded_paths is None or excluded_paths == []:
             return True
-        elif path is excluded_paths:
+        elif path in excluded_paths:
             return False
         else:
             for i in excluded_paths:
@@ -54,3 +57,16 @@ class Auth:
         Returns a User instance from information from a request object
         """
         return None
+
+    def session_cookie(self, request=None):
+        """
+        Returns a cookie from a request
+        Args:
+            request : request object
+        Return:
+            value of _my_session_id cookie from request object
+        """
+        if request is None:
+            return None
+        session_name = os.getenv('SESSION_NAME')
+        return request.cookies.get(session_name)
